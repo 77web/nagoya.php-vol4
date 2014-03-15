@@ -34,7 +34,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function ロックされたらお客はもう処理できない()
+    public function Xが来た後カウントダウンしてゼロになったらロックする()
     {
         $regi = new Register(5);
         $regi->addShoppers(10);
@@ -46,35 +46,33 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($regi->getIsLocked());
         $this->assertEquals(6, $regi->getShoppers());
 
-        $this->process();
+        $regi->process();
+        $this->assertTrue($regi->getIsLocked());
+        $this->assertEquals(1, $regi->getShoppers());
     }
 
     /**
      * @test
      */
-    public function ロックされてもお客は追加できる()
+    public function ロックされていてもお客は追加できるがそれ以上処理されることはない()
     {
         $regi = new Register(5);
-        $regi->addShoppers(10);
 
         $regi->startCountDownToLock();
         $this->assertFalse($regi->getIsLocked());
-        $this->assertEquals(11, $regi->getShoppers());
-
-        $regi->process();
-        $this->assertFalse($regi->getIsLocked());
-        $this->assertEquals(6, $regi->getShoppers());
-
-        $regi->process();
-        $this->assertFalse($regi->getIsLocked());
         $this->assertEquals(1, $regi->getShoppers());
-
-        $regi->addShoppers(10);
-        $this->assertEquals(11, $regi->getShoppers());
 
         $regi->process();
         $this->assertTrue($regi->getIsLocked());
-        $this->assertEquals(11, $regi->getShoppers());
+        $this->assertEquals(1, $regi->getShoppers());
+
+        $regi->addShoppers(3);
+        $this->assertTrue($regi->getIsLocked());
+        $this->assertEquals(4, $regi->getShoppers());
+
+        $regi->process();
+        $this->assertTrue($regi->getIsLocked());
+        $this->assertEquals(4, $regi->getShoppers());
     }
 
     /**

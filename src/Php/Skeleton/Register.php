@@ -60,7 +60,6 @@ class Register
     {
         $this->countdownToLock = $this->shoppers;
         $this->addShoppers(1);
-
     }
 
     /**
@@ -85,15 +84,16 @@ class Register
     public function process()
     {
         if (!$this->isLocked) {
-            // 処理できる人数
+            // 今回処理できる人数
             $process = $this->processPerIteration;
 
-            // カウントダウン中ならカウントダウンを減らす
+            // カウントダウン中ならまずカウントダウンを減らす
             if (false !== $this->countdownToLock) {
                 if ($this->countdownToLock > $this->processPerIteration) {
                     $this->countdownToLock -= $this->processPerIteration;
                 } else {
                     $process = $this->countdownToLock;
+                    $this->countdownToLock = 0;
                     $this->lock();
                 }
             }
