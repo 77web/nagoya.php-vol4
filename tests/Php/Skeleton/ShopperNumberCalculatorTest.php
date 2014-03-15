@@ -37,6 +37,7 @@ class ShopperNumberCalculatorTest extends \PHPUnit_Framework_TestCase
             ['3x.', '1,1,0,0,0'],
             ['12x34x.', '1,0,1,0,2'],
             ['x1111x.', '2,0,0,0,0'],
+            ['4.1..9..513.266..5999769852.2.38x79.x7', '12,10,13,6,10'],
         ];
     }
 }
