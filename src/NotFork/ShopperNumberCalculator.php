@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Skeleton;
+namespace NotFork;
 
 
 class ShopperNumberCalculator

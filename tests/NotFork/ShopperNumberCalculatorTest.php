@@ -1,8 +1,8 @@
 <?php
 
-namespace Php\Skeleton;
+namespace NotFork;
 
-use PHP\Skeleton\ShopperNumberCalculator;
+use NotFork\ShopperNumberCalculator;
 
 class ShopperNumberCalculatorTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Skeleton;
+namespace NotFork;
 
 
 class RegisterTest extends \PHPUnit_Framework_TestCase
