@@ -29,7 +29,13 @@ class ShopperNumberCalculatorTest extends \PHPUnit_Framework_TestCase
     public function provideData()
     {
         return [
-            ['42873x.3.', '0,4,2,0,0']
+            ['42873x.3.', '0,4,2,0,0'],
+            ['1', '1,0,0,0,0'],
+            ['.', '0,0,0,0,0'],
+            ['x', '1,0,0,0,0'],
+            ['31.', '1,0,0,0,0'],
+            ['3x.', '1,1,0,0,0'],
+            ['12x34x.', '1,0,1,0,2']
         ];
     }
 }
