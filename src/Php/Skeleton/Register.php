@@ -51,6 +51,7 @@ class Register
      */
     public function lock()
     {
+        $this->addShoppers(1);
         $this->isLocked = true;
     }
 
@@ -62,6 +63,9 @@ class Register
         if (!$this->isLocked) {
 
             $this->shoppers -= $this->processPerIteration;
+            if (0 > $this->shoppers) {
+                $this->shoppers = 0;
+            }
         }
     }
 
