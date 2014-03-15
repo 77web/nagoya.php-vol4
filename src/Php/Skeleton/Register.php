@@ -58,7 +58,9 @@ class Register
      */
     public function startCountDownToLock()
     {
-        $this->countdownToLock = $this->shoppers;
+        if (false === $this->countdownToLock) {
+            $this->countdownToLock = $this->shoppers;
+        }
         $this->addShoppers(1);
     }
 

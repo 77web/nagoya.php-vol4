@@ -78,7 +78,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function 残り客数がゼロになったらそれ以上処理せず待ち客数ゼロ()
+    public function 残り客数がゼロかマイナスになったらそれ以上処理せず待ち客数ゼロ()
     {
         $regi = new Register(10);
 
@@ -88,7 +88,26 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $regi->addShoppers(1);
         $regi->process();
         $this->assertEquals(0, $regi->getShoppers());
+    }
 
+    /**
+     * @test
+     */
+    public function 複数のxが同じレジに並んだ場合一回目のxだけをxとして扱う()
+    {
+        $regi = new Register(1);
+
+        $regi->startCountDownToLock();
+        $this->assertFalse($regi->getIsLocked());
+        $this->assertEquals(1, $regi->getShoppers());
+
+        $regi->startCountDownToLock();
+        $this->assertFalse($regi->getIsLocked());
+        $this->assertEquals(2, $regi->getShoppers());
+
+        $regi->process();
+        $this->assertTrue($regi->getIsLocked());
+        $this->assertEquals(2, $regi->getShoppers());
     }
 }
  
