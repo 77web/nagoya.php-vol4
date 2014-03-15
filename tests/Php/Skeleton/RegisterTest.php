@@ -39,12 +39,14 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $regi = new Register(5);
         $regi->addShoppers(10);
 
-        $regi->lock();
+        $regi->startCountdownToLock();
         $this->assertEquals(11, $regi->getShoppers());
 
         $regi->process();
+        $this->assertFalse($regi->getIsLocked());
+        $this->assertEquals(6, $regi->getShoppers());
 
-        $this->assertEquals(11, $regi->getShoppers());
+        $this->process();
     }
 
     /**
@@ -55,11 +57,24 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $regi = new Register(5);
         $regi->addShoppers(10);
 
-        $regi->lock();
+        $regi->startCountDownToLock();
+        $this->assertFalse($regi->getIsLocked());
+        $this->assertEquals(11, $regi->getShoppers());
+
+        $regi->process();
+        $this->assertFalse($regi->getIsLocked());
+        $this->assertEquals(6, $regi->getShoppers());
+
+        $regi->process();
+        $this->assertFalse($regi->getIsLocked());
+        $this->assertEquals(1, $regi->getShoppers());
 
         $regi->addShoppers(10);
+        $this->assertEquals(11, $regi->getShoppers());
 
-        $this->assertEquals(20, $regi->getShoppers());
+        $regi->process();
+        $this->assertTrue($regi->getIsLocked());
+        $this->assertEquals(11, $regi->getShoppers());
     }
 
     /**

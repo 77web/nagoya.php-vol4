@@ -55,7 +55,7 @@ class ShopperNumberCalculator
                 $regi = $this->getShortestRegister();
 
                 if ('x' === $current) {
-                    $regi->lock();
+                    $regi->startCountDownToLock();
                 } else {
                     $regi->addShoppers(intval($current));
                 }

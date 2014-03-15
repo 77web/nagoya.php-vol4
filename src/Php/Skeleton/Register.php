@@ -6,6 +6,12 @@ namespace Php\Skeleton;
 class Register
 {
     /**
+     * xの客までのカウントダウン
+     *
+     * @var int
+     */
+    private $countdownToLock;
+    /**
      * xの客が来てしまったかどうか
      *
      * @var bool
@@ -34,6 +40,7 @@ class Register
         $this->processPerIteration = $processPerIteration;
         $this->shoppers = 0;
         $this->isLocked = false;
+        $this->countdownToLock = false;
     }
 
     /**
@@ -47,12 +54,29 @@ class Register
     }
 
     /**
-     * xの客が来た時（レジがロックされちゃう）
+     * xの客が来た時（レジがロックされちゃうまでカウントダウン開始）
      */
-    public function lock()
+    public function startCountDownToLock()
     {
+        $this->countdownToLock = $this->shoppers;
         $this->addShoppers(1);
+
+    }
+
+    /**
+     * xの客の処理にあたったとき
+     */
+    protected function lock()
+    {
         $this->isLocked = true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsLocked()
+    {
+        return $this->isLocked;
     }
 
     /**
@@ -61,11 +85,25 @@ class Register
     public function process()
     {
         if (!$this->isLocked) {
+            // 処理できる人数
+            $process = $this->processPerIteration;
 
-            $this->shoppers -= $this->processPerIteration;
+            // カウントダウン中ならカウントダウンを減らす
+            if (false !== $this->countdownToLock) {
+                if ($this->countdownToLock > $this->processPerIteration) {
+                    $this->countdownToLock -= $this->processPerIteration;
+                } else {
+                    $process = $this->countdownToLock;
+                    $this->lock();
+                }
+            }
+
+            // 0になるまで待ち客を減らす
+            $this->shoppers -= $process;
             if (0 > $this->shoppers) {
                 $this->shoppers = 0;
             }
+
         }
     }
 
